@@ -1,0 +1,9 @@
+{
+    "window.zoomLevel": -1,
+    "editor.cursorBlinking": "expand",
+    "editor.mouseWheelZoom": true,
+    "editor.fontSize": 15,
+    "editor.formatOnSave": true,
+    "typescript.format.semicolons": "insert",
+    "javascript.format.semicolons": "insert"
+}
