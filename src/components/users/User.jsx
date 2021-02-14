@@ -1,100 +1,96 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
 import Repos from '../repos/Repos';
 import { Link } from 'react-router-dom';
 
 
-class User extends Component {
+const User = ({ user, loading, getUserRepos, getUser, repos, match }) => {
 
-    static propTypes = {
-        loading: PropTypes.bool,
-        user: PropTypes.object.isRequired,
-        getUser: PropTypes.func.isRequired,
-        repos: PropTypes.array.isRequired,
-        getUserRepos: PropTypes.func.isRequired,
-    };
+    useEffect(() => {
+        getUser(match.params.login);
+        getUserRepos(match.params.login);
+        // eslint-disable-next-line
+    }, []);
 
+    const {
+        name,
+        location,
+        avatar_url,
+        bio,
+        blog,
+        login,
+        html_url,
+        company,
+        followers,
+        following,
+        public_repos,
+        public_gist,
+        hireable
+    } = user;
 
-    componentDidMount() {
+    // const { loading, repos } = this.props;
 
-        this.props.getUser(this.props.match.params.login);
-        this.props.getUserRepos(this.props.match.params.login);
-    }
+    if (loading) return <Spinner />;
 
-    render() {
-
-        const {
-            name,
-            location,
-            avatar_url,
-            bio,
-            blog,
-            login,
-            html_url,
-            company,
-            followers,
-            following,
-            public_repos,
-            public_gist,
-            hireable
-        } = this.props.user;
-
-        const { loading, repos } = this.props;
-
-        if (loading) return <Spinner />;
-
-        return <Fragment>
-            <Link to='/' className='btn btn-light'>
-                Back To Search
+    return <Fragment>
+        <Link to='/' className='btn btn-light'>
+            Back To Search
             </Link>
 
             Hireble: {' '}
-            {hireable ? <i className='fas fa-check text-success' /> : <i className='fas fa-times-circle text-danger' />}
+        {hireable ? <i className='fas fa-check text-success' /> : <i className='fas fa-times-circle text-danger' />}
 
-            <div className="card grid-2">
-                <div className="all-center">
-                    <img src={avatar_url} className='round-img' alt="" style={{ width: '150px' }} />
-                    <h1>{name}</h1>
-                    <p>Location: {location}</p>
-                </div>
-                <div>
-                    {bio && <Fragment>
-                        <h1>Bio</h1>
-                        <p>{bio}</p>
-                    </Fragment>}
-                    <a href={html_url} className="btn btn-dark my-1">Visit Github Profile</a>
-                    <ul>
-                        <li>
-                            {login && <Fragment>
-                                <strong>Username: </strong>{login}
-                            </Fragment>}
-                        </li>
-                        <li>
-                            {company && <Fragment>
-                                <strong>Company: </strong>{company}
-                            </Fragment>}
-                        </li>
-                        <li>
-                            {blog && <Fragment>
-                                <strong>Website: </strong><a href={blog}>{blog}</a>
-                            </Fragment>}
-                        </li>
-                    </ul>
-                </div>
+        <div className="card grid-2">
+            <div className="all-center">
+                <img src={avatar_url} className='round-img' alt="" style={{ width: '150px' }} />
+                <h1>{name}</h1>
+                <p>Location: {location}</p>
             </div>
-            <div className="card text-center">
-                <div className="badge badge-primary">Followers: {followers}</div>
-                <div className="badge badge-success">Following: {following}</div>
-                <div className="badge badge-light">Public Repos: {public_repos}</div>
-                <div className="badge badge-dark">Public Gist: {public_gist}</div>
+            <div>
+                {bio && <Fragment>
+                    <h1>Bio</h1>
+                    <p>{bio}</p>
+                </Fragment>}
+                <a href={html_url} className="btn btn-dark my-1">Visit Github Profile</a>
+                <ul>
+                    <li>
+                        {login && <Fragment>
+                            <strong>Username: </strong>{login}
+                        </Fragment>}
+                    </li>
+                    <li>
+                        {company && <Fragment>
+                            <strong>Company: </strong>{company}
+                        </Fragment>}
+                    </li>
+                    <li>
+                        {blog && <Fragment>
+                            <strong>Website: </strong><a href={blog}>{blog}</a>
+                        </Fragment>}
+                    </li>
+                </ul>
             </div>
-            <div className="card">
-                <h1 className='text-center'>Repos</h1>
-                <Repos repos={repos} />
-            </div>
-        </Fragment>;
-    }
-}
+        </div>
+        <div className="card text-center">
+            <div className="badge badge-primary">Followers: {followers}</div>
+            <div className="badge badge-success">Following: {following}</div>
+            <div className="badge badge-light">Public Repos: {public_repos}</div>
+            <div className="badge badge-dark">Public Gist: {public_gist}</div>
+        </div>
+        <div className="card">
+            <h1 className='text-center'>Repos</h1>
+            <Repos repos={repos} />
+        </div>
+    </Fragment>;
+};
+
+User.propTypes = {
+    loading: PropTypes.bool,
+    user: PropTypes.object.isRequired,
+    getUser: PropTypes.func.isRequired,
+    repos: PropTypes.array.isRequired,
+    getUserRepos: PropTypes.func.isRequired,
+};
 
 export default User;
