@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import AlertContext from '../../context/alert/aLertContext';
 
-const Alert = ({ removeAlert }) => {
+const Alert = () => {
 
 
     const alertContext = useContext(AlertContext);
 
-    const { alert } = alertContext;
+    const { alert, removeAlert } = alertContext;
 
     return (
         alert !== null && (

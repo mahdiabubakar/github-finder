@@ -6,10 +6,9 @@ import GithubReducer from './githubReducer';
 import {
     SEARCH_USERS,
     SET_LOADING,
-    GET_USERS,
     GET_USER,
     GET_REPOS,
-    CLEAR_USERS
+    CLEAR_USERS,
 } from '../types';
 
 const GithubState = (props) => {
@@ -49,10 +48,6 @@ const GithubState = (props) => {
         });
     };
 
-    // Set Loading
-
-    // Get Users
-
     // Clear Users
     const clearUsers = () => dispatch({ type: CLEAR_USERS });
 
@@ -60,17 +55,13 @@ const GithubState = (props) => {
     const getUserRepos = async username => {
 
         setLoading();
-        // this.setState({ loading: true });
 
         const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=10&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
 
-        // this.setState({ repos: res.data, loading: false });
         dispatch({
             type: GET_REPOS,
             payload: res.data
         });
-        // setRepos(res.data);
-        // setLoading(false);
     };
 
     // Set Loading
@@ -87,10 +78,10 @@ const GithubState = (props) => {
                 searchUsers,
                 clearUsers,
                 getUser,
-                getUserRepos
+                getUserRepos,
+                // removeAlert
             }}
         >
-
             {props.children}
         </GithubContext.Provider>
     );
